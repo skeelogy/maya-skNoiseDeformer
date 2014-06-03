@@ -3,64 +3,82 @@
 @contact: skeel@skeelogy.com
 @since: 30 May 2014
 
-A noise deformer plugin for Maya. It deforms meshes using fBm (fractional Brownian motion) which adds up multiple layers of Simplex noises.
+A noise deformer plugin for Maya. It deforms meshes using fBm (fractional
+Brownian motion) which adds up multiple layers of Simplex noises.
 
 ---------Usage-------------
 
-1) Load the plugin, either using the Plug-in Manager or using the following MEL command:
+1) Load the plugin, either using the Plug-in Manager or using the following MEL
+   command:
 
-    loadPlugin "skScriptedNoiseDeformer.py"
+        loadPlugin "skScriptedNoiseDeformer.py"
 
 2) Select a mesh
 
-3) Attach a new noise deformer to the mesh by executing the following MEL command:
+3) Attach a new noise deformer to the mesh by executing the following MEL
+   command:
 
-    deformer -type skScriptedNoiseDeformer
+        deformer -type skScriptedNoiseDeformer
 
-4) Adjust the noise attributes (e.g. amplitude, frequency, octaves, lacunarity) in the channel box accordingly
+4) Adjust the noise attributes (e.g. amplitude, frequency, octaves, lacunarity)
+   in the channel box accordingly
 
-5) Move/rotate/scale the accessory locator to transform the noise space, as desired
+5) Move/rotate/scale the accessory locator to transform the noise space, as
+   desired
 
 ---------Notes-------------
 
-In order to get the fastest speed out of this Python plugin, I would recommend compiling/installing the noise library into mayapy.
+In order to get the fastest speed out of this Python plugin, I would recommend
+compiling/installing the noise library into mayapy.
 
-1) Download the noise library from Casey Duncan at https://github.com/caseman/noise. This includes some C files that needs to be compiled into Python modules.
+1) Download the noise library from Casey Duncan at
+   https://github.com/caseman/noise. This includes some C files that needs to
+   be compiled into Python modules.
 
-2) You will need a Python.h header file. If you do not already have that, execute this command in a terminal (or the equivalent in other Linux distros):
+2) You will need a Python.h header file. If you do not already have that,
+   execute this command in a terminal (or the equivalent in other Linux
+   distros):
 
-    > sudo apt-get install python-dev
+        > sudo apt-get install python-dev
 
-3) Execute this command in a terminal to compile and install the Python modules into mayapy:
+3) Execute this command in a terminal to compile and install the Python modules
+   into mayapy:
 
-    > sudo `which mayapy` setup.py install
+        > sudo `which mayapy` setup.py install
 
 4) To verify that the installation has worked, try doing this in a shell:
 
-    > mayapy
-    [mayapy shell loads...]
-    >>> import noise
-    >>> noise.snoise3(2, 8, 3)
-    -0.6522196531295776
+        > mayapy
+        [mayapy shell loads...]
+        >>> import noise
+        >>> noise.snoise3(2, 8, 3)
+        -0.6522196531295776
 
-Note that this Python plugin will still work if you are unable to perform the steps above. The plugin will fall back to a pure-Python perlin.py module from Casey Duncan if it cannot find the compiled noise module above. The speed is much slower though and I would strongly recommend getting the above steps to work if you are keen to use this Python plugin.
+Note that this Python plugin will still work if you are unable to perform the
+steps above. The plugin will fall back to a pure-Python perlin.py module from
+Casey Duncan if it cannot find the compiled noise module above. The speed is
+much slower though and I would strongly recommend getting the above steps to
+work if you are keen to use this Python plugin.
 
 ---------Credits-------------
 
-This plugin uses the noise library from Casey Duncan: https://github.com/caseman/noise
+This plugin uses the noise library from Casey Duncan:
+https://github.com/caseman/noise
 
 ---------License-------------
 
-Released under The MIT License (MIT)
-Copyright (c) 2014 Skeel Lee (http://cg.skeelogy.com)
+Released under The MIT License (MIT) Copyright (c) 2014 Skeel Lee
+(http://cg.skeelogy.com)
 
 """
 
 try:
-    #import the faster C-based noise module if user has compiled/installed it to mayapy
+    #import the faster C-based noise module
+    #if user has compiled/installed it to mayapy
     import noise
 except:
-    #otherwise just import the slower pure-python perlin module because it works out-of-the-box without installation
+    #otherwise just import the slower pure-python perlin module
+    #because it works out-of-the-box without installation
     import libnoise.perlin
     noise = libnoise.perlin.SimplexNoise()
 
