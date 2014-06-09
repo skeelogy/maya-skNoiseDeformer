@@ -7,18 +7,26 @@
 
 #Make a release build:
 # > make
+# or
+# > make TYPE=MT (for the multi-threaded version)
 
 #Copy compiled release plugin to installation directory $(MAYA_APP_DIR)/$(MAYA_VERSION)/plugins/$(PLATFORM)$(BITS):
 # > make install MAYA_VERSION=2014-x64
+# or
+# > make install MAYA_VERSION=2014-x64 TYPE=MT (for the multi-threaded version)
 
 #Clean release build as needed:
 # > make clean
 
 #Make a debug build:
 # > make BUILD=debug
+# or
+# > make BUILD=debug TYPE=MT (for the multi-threaded version)
 
 #Copy compiled debug plugin to installation directory $(MAYA_APP_DIR)/$(MAYA_VERSION)/plugins/$(PLATFORM)$(BITS):
 # > make install MAYA_VERSION=2014-x64 BUILD=debug
+# or
+# > make install MAYA_VERSION=2014-x64 BUILD=debug TYPE=MT (for the multi-threaded version)
 
 #Clean up temp files as needed:
 # > make clean
@@ -94,12 +102,12 @@ LIBS += -lOpenMaya -lFoundation
 LIBPATHS += -L$(MAYA_LOCATION)/lib
 
 #find cpp files and define their corresponding .o files
-SRCFULLPATH = $(shell find . -name "*.cpp")
+SRCFULLPATH = $(TARGETNAME)$(TYPE).cpp
 SRC = $(notdir $(SRCFULLPATH))
 OBJ = $(SRC:%.cpp=%.o)
 
 #final compiled target name and installation directory
-TARGET = $(TARGETNAME)$(DEBUGSUFFIX)$(TARGETEXT)
+TARGET = $(TARGETNAME)$(TYPE)$(DEBUGSUFFIX)$(TARGETEXT)
 INSTALLDIR = $(MAYA_APP_DIR)/$(MAYA_VERSION)/plugins/$(PLATFORM)$(BITS)
 
 #======================================

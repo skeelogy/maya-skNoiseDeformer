@@ -5,7 +5,7 @@ skNoiseDeformer Maya Plugin
 
 This is a noise deformer plugin for Maya. It deforms meshes using fBm (fractional Brownian motion) which adds up multiple layers of Simplex noises.
 
-Both the C++ and Python plugins are available.
+Both the C++ and Python plugins are available. Multi-threaded implementations are also included, labelled with a suffix of MT.
 
 ### Usage
 
@@ -14,6 +14,8 @@ Both the C++ and Python plugins are available.
 If you are using the C++ plugin:
 
     loadPlugin "skNoiseDeformer.so"
+	or
+    loadPlugin "skNoiseDeformerMT.so" (for the multi-threaded version)
 
 If you are using the Python plugin:
 
@@ -26,6 +28,8 @@ If you are using the Python plugin:
 If you are using the C++ plugin:
 
     deformer -type skNoiseDeformer
+    or
+    deformer -type skNoiseDeformerMT (for the multi-threaded version)
 
 If you are using the Python plugin:
 
@@ -46,22 +50,30 @@ The makefile provided here is for Maya 2014 and uses g++412. If you are using an
 Once the correct version of gcc is installed on your Linux system, you can execute the following command in a terminal to compile the plugin:
 
     > make
+    or
+    > make TYPE=MT (for the multi-threaded version)
 
 A *skNoiseDeformer.so* file will be created in the bin sub-directory. This is the actual compiled plugin. You can copy it manually to a suitable installation folder, or you can run this in the same terminal:
 
     > make install MAYA_VERSION=2014-x64
+    or
+    > make install MAYA_VERSION=2014-x64 TYPE=MT (for the multi-threaded version)
 
 which will install the *skNoiseDeformer.so* file to a plugin directory in the user maya directory (the one where preferences are stored).
 
 You can also compile the debug version of the plugin if necessary:
 
     > make BUILD=debug
+    or
+    > make BUILD=debug TYPE=MT (for the multi-threaded version)
 
 which will produce a *skNoiseDeformer_d.so* plugin.
 
 You can also install this debug plugin in a similar fashion:
 
     > make install MAYA_VERSION=2014-x64 BUILD=debug
+    or
+    > make install MAYA_VERSION=2014-x64 BUILD=debug TYPE=MT (for the multi-threaded version)
 
 If you need to clean the project, you can do it using the usual way:
 
