@@ -3,8 +3,9 @@
  * Contact: skeel@skeelogy.com
  * Since: 1 Jun 2014
  *
- * A noise deformer plugin for Maya. It deforms meshes using fBm (fractional
- * Brownian motion) which adds up multiple layers of Simplex noises.
+ * A multi-threaded noise deformer plugin for Maya. It deforms meshes using fBm
+ * (fractional Brownian motion) which adds up multiple layers of Simplex
+ * noises.
  *
  * ---------Compiling-------------
  *
@@ -22,26 +23,26 @@
  * Once the correct version of gcc is installed on your Linux system, you can
  * execute the following command in a terminal to compile the plugin:
  *
- *     > make
+ *     > make TYPE=MT
  *
- * A skNoiseDeformer.so file will be created in the bin sub-directory. This is
+ * A skNoiseDeformerMT.so file will be created in the bin sub-directory. This is
  * the actual compiled plugin. You can copy it manually to a suitable
  * installation folder, or you can run this in the same terminal:
  *
- *     > make install MAYA_VERSION=2014-x64
+ *     > make install MAYA_VERSION=2014-x64 TYPE=MT
  *
- * which will install the skNoiseDeformer.so file to a plugin directory in the
+ * which will install the skNoiseDeformerMT.so file to a plugin directory in the
  * user maya directory (the one where preferences are stored).
  *
  * You can also compile the debug version of the plugin if necessary:
  *
- *     > make BUILD=debug
+ *     > make TYPE=MT BUILD=debug
  *
- * which will produce a skNoiseDeformer_d.so plugin.
+ * which will produce a skNoiseDeformerMT_d.so plugin.
  *
  * You can also install this debug plugin in a similar fashion:
  *
- *     > make install MAYA_VERSION=2014-x64 BUILD=debug
+ *     > make install MAYA_VERSION=2014-x64 TYPE=MT BUILD=debug
  *
  * If you need to clean the project, you can do it using the usual way:
  *
@@ -52,14 +53,14 @@
  * 1) Load the plugin, either using the Plug-in Manager or using the following
  * MEL command:
  *
- *     loadPlugin "skNoiseDeformer.so"
+ *     loadPlugin "skNoiseDeformerMT.so"
  *
  * 2) Select a mesh
  *
  * 3) Attach a new noise deformer to the mesh by executing the following MEL
  * command:
  *
- *     deformer -type skNoiseDeformer
+ *     deformer -type skNoiseDeformerMT
  *
  * 4) Adjust the noise attributes (e.g. amplitude, frequency, octaves,
  * lacunarity) in the channel box accordingly
@@ -96,7 +97,6 @@ public:
     virtual MObject& accessoryAttribute() const;
     static void* creator();
     static MStatus initialize();
-
 
 public:
     static MTypeId nodeId;

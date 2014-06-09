@@ -499,7 +499,6 @@ MStatus SkNoiseDeformerMT::initialize()
     stat = attributeAffects(SkNoiseDeformerMT::locatorWorldSpace, SkNoiseDeformerMT::outputGeom);
     CHECK_ERROR(stat, "Unable to call attributeAffects from locatorWorldSpace to outputGeom");
 
-
     return stat;
 }
 
