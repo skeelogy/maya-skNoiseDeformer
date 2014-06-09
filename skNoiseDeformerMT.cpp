@@ -81,7 +81,6 @@
  */
 
 #include <cmath>
-#include <stdlib.h>
 
 #include <maya/MFnPlugin.h>
 #include <maya/MTypeId.h>
