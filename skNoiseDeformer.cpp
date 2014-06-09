@@ -12,8 +12,8 @@
  * version based on the Maya version that you are using. For example, for Maya
  * 2014, gcc 4.1.2 is required. You can follow the steps in the Maya 2014 Linux
  * compiler requirement documentation
- * (http://docs.autodesk.com/MAYAUL/2014/ENU/Maya-API-Documentation/index.html?url=files/Shapes.htm,topicNumber=d30e14674)
- * to get that installed.
+ * (http://docs.autodesk.com/MAYAUL/2014/ENU/Maya-API-Documentation/index.html?
+ * url=files/Shapes.htm,topicNumber=d30e14674) to get that installed.
  *
  * The makefile provided here is for Maya 2014 and uses g++412. If you are
  * using another version of Maya, you might need to edit the makefile
@@ -105,7 +105,7 @@
 #include "skNoiseDeformer.h"
 
 MString nodeType("skNoiseDeformer");
-MString nodeVersion("1.0");
+MString nodeVersion("1.0.1");
 MTypeId SkNoiseDeformer::nodeId(0x001212C0); //unique id obtained from ADN
 
 #define CHECK_ERROR(stat, msg) \
@@ -137,8 +137,8 @@ MStatus SkNoiseDeformer::deform(MDataBlock& dataBlock,
     //get envelope value, return if sufficiently near to 0
     MDataHandle envDataHandle = dataBlock.inputValue(envelope, &stat);
     CHECK_ERROR(stat, "Unable to get envelope data handle\n");
-    float envFloat = envDataHandle.asFloat();
-    if (EPSILON >= envFloat)
+    float env = envDataHandle.asFloat();
+    if (EPSILON >= env)
     {
         return stat;
     }
@@ -146,27 +146,27 @@ MStatus SkNoiseDeformer::deform(MDataBlock& dataBlock,
     //get attribute values
     MDataHandle ampDataHandle = dataBlock.inputValue(amp, &stat);
     CHECK_ERROR(stat, "Unable to get amplitude data handle\n");
-    float *ampFloats = ampDataHandle.asFloat3();
+    float *amps = ampDataHandle.asFloat3();
 
     MDataHandle freqDataHandle = dataBlock.inputValue(freq, &stat);
     CHECK_ERROR(stat, "Unable to get frequency data handle\n");
-    float *freqFloats = freqDataHandle.asFloat3();
+    float *freqs = freqDataHandle.asFloat3();
 
     MDataHandle offsetDataHandle = dataBlock.inputValue(offset, &stat);
     CHECK_ERROR(stat, "Unable to get offset data handle\n");
-    float *offsetFloats = offsetDataHandle.asFloat3();
+    float *offsets = offsetDataHandle.asFloat3();
 
     MDataHandle octavesDataHandle = dataBlock.inputValue(octaves, &stat);
     CHECK_ERROR(stat, "Unable to get octaves data handle\n");
-    int octavesInt = octavesDataHandle.asInt();
+    int octaves = octavesDataHandle.asInt();
 
     MDataHandle lacunarityDataHandle = dataBlock.inputValue(lacunarity, &stat);
     CHECK_ERROR(stat, "Unable to get lacunarity data handle\n");
-    float lacunarityFloat = lacunarityDataHandle.asFloat();
+    float lacunarity = lacunarityDataHandle.asFloat();
 
     MDataHandle persistenceDataHandle = dataBlock.inputValue(persistence, &stat);
     CHECK_ERROR(stat, "Unable to get persistence data handle\n");
-    float persistenceFloat = persistenceDataHandle.asFloat();
+    float persistence = persistenceDataHandle.asFloat();
 
     MDataHandle locatorWorldSpaceDataHandle = dataBlock.inputValue(locatorWorldSpace, &stat);
     CHECK_ERROR(stat, "Unable to get locatorWorldSpace data handle\n");
@@ -177,15 +177,15 @@ MStatus SkNoiseDeformer::deform(MDataBlock& dataBlock,
     MMatrix locatorToLocalSpaceMat = locatorWorldSpaceMat * localToWorldMat.inverse();
 
     //iterate through all the points
-    float weightFloat;
+    float weight;
     MPoint pos;
     float noiseInput[3];
     float envTimesWeight;
     for (geomIter.reset(); !geomIter.isDone(); geomIter.next())
     {
         //get weight value for this point, continue if sufficiently near to 0
-        weightFloat = weightValue(dataBlock, multiIndex, geomIter.index());
-        if (EPSILON >= weightFloat)
+        weight = weightValue(dataBlock, multiIndex, geomIter.index());
+        if (EPSILON >= weight)
         {
             continue;
         }
@@ -195,15 +195,15 @@ MStatus SkNoiseDeformer::deform(MDataBlock& dataBlock,
         pos *= localToLocatorSpaceMat;
 
         //precompute some values
-        noiseInput[0] = freqFloats[0] * pos.x - offsetFloats[0];
-        noiseInput[1] = freqFloats[1] * pos.y - offsetFloats[1];
-        noiseInput[2] = freqFloats[2] * pos.z - offsetFloats[2];
-        envTimesWeight = envFloat * weightFloat;
+        noiseInput[0] = freqs[0] * pos.x - offsets[0];
+        noiseInput[1] = freqs[1] * pos.y - offsets[1];
+        noiseInput[2] = freqs[2] * pos.z - offsets[2];
+        envTimesWeight = env * weight;
 
         //calculate new position
-        pos.x += ampFloats[0] * fbm_noise3(noiseInput[0], noiseInput[1], noiseInput[2], octavesInt, persistenceFloat, lacunarityFloat) * envTimesWeight;
-        pos.y += ampFloats[1] * fbm_noise3(noiseInput[0] + 123, noiseInput[1] + 456, noiseInput[2] + 789, octavesInt, persistenceFloat, lacunarityFloat) * envTimesWeight;
-        pos.z += ampFloats[2] * fbm_noise3(noiseInput[0] + 234, noiseInput[1] + 567, noiseInput[2] + 890, octavesInt, persistenceFloat, lacunarityFloat) * envTimesWeight;
+        pos.x += amps[0] * fbm_noise3(noiseInput[0], noiseInput[1], noiseInput[2], octaves, persistence, lacunarity) * envTimesWeight;
+        pos.y += amps[1] * fbm_noise3(noiseInput[0] + 123, noiseInput[1] + 456, noiseInput[2] + 789, octaves, persistence, lacunarity) * envTimesWeight;
+        pos.z += amps[2] * fbm_noise3(noiseInput[0] + 234, noiseInput[1] + 567, noiseInput[2] + 890, octaves, persistence, lacunarity) * envTimesWeight;
 
         //convert back to local space
         pos *= locatorToLocalSpaceMat;

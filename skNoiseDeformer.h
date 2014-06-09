@@ -12,8 +12,8 @@
  * version based on the Maya version that you are using. For example, for Maya
  * 2014, gcc 4.1.2 is required. You can follow the steps in the Maya 2014 Linux
  * compiler requirement documentation
- * (http://docs.autodesk.com/MAYAUL/2014/ENU/Maya-API-Documentation/index.html?url=files/Shapes.htm,topicNumber=d30e14674)
- * to get that installed.
+ * (http://docs.autodesk.com/MAYAUL/2014/ENU/Maya-API-Documentation/index.html?
+ * url=files/Shapes.htm,topicNumber=d30e14674) to get that installed.
  *
  * The makefile provided here is for Maya 2014 and uses g++412. If you are
  * using another version of Maya, you might need to edit the makefile
@@ -88,9 +88,9 @@ class SkNoiseDeformer : public MPxDeformerNode
 public:
     SkNoiseDeformer() {}
     virtual ~SkNoiseDeformer() {}
-    virtual MStatus deform(MDataBlock& block,
-                           MItGeometry& iter,
-                           const MMatrix& mat,
+    virtual MStatus deform(MDataBlock& dataBlock,
+                           MItGeometry& geomIter,
+                           const MMatrix& localToWorldMat,
                            unsigned int multiIndex);
     virtual MStatus accessoryNodeSetup(MDagModifier& dagMod);
     virtual MObject& accessoryAttribute() const;
