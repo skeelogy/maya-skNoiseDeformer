@@ -93,7 +93,7 @@ nodeId = om.MTypeId(0x001212C1) #unique id obtained from ADN
 
 EPSILON = 0.0000001
 
-class skScriptedNoiseDeformer(omMPx.MPxDeformerNode):
+class SkScriptedNoiseDeformer(omMPx.MPxDeformerNode):
 
     amp = om.MObject()
     freq = om.MObject()
@@ -104,7 +104,7 @@ class skScriptedNoiseDeformer(omMPx.MPxDeformerNode):
     locatorWorldSpace = om.MObject()
 
     def __init__(self):
-        super(skScriptedNoiseDeformer, self).__init__()
+        super(SkScriptedNoiseDeformer, self).__init__()
 
     def deform(self, dataBlock, geomIter, localToWorldMat, multiIndex):
 
@@ -211,7 +211,7 @@ class skScriptedNoiseDeformer(omMPx.MPxDeformerNode):
 
 #creator function
 def nodeCreator():
-    return omMPx.asMPxPtr(skScriptedNoiseDeformer())
+    return omMPx.asMPxPtr(SkScriptedNoiseDeformer())
 
 #init function
 def nodeInitializer():
@@ -220,57 +220,57 @@ def nodeInitializer():
 
     #amplitude attr
     nAttr = om.MFnNumericAttribute()
-    skScriptedNoiseDeformer.amp = nAttr.createPoint('amplitude', 'amp')
+    SkScriptedNoiseDeformer.amp = nAttr.createPoint('amplitude', 'amp')
     nAttr.setDefault(1.0, 1.0, 1.0)
     nAttr.setKeyable(True)
-    skScriptedNoiseDeformer.addAttribute(skScriptedNoiseDeformer.amp)
-    skScriptedNoiseDeformer.attributeAffects(skScriptedNoiseDeformer.amp, outputGeom)
+    SkScriptedNoiseDeformer.addAttribute(SkScriptedNoiseDeformer.amp)
+    SkScriptedNoiseDeformer.attributeAffects(SkScriptedNoiseDeformer.amp, outputGeom)
 
     #frequency attr
     nAttr = om.MFnNumericAttribute()
-    skScriptedNoiseDeformer.freq = nAttr.createPoint('frequency', 'freq')
+    SkScriptedNoiseDeformer.freq = nAttr.createPoint('frequency', 'freq')
     nAttr.setDefault(1.0, 1.0, 1.0)
     nAttr.setKeyable(True)
-    skScriptedNoiseDeformer.addAttribute(skScriptedNoiseDeformer.freq)
-    skScriptedNoiseDeformer.attributeAffects(skScriptedNoiseDeformer.freq, outputGeom)
+    SkScriptedNoiseDeformer.addAttribute(SkScriptedNoiseDeformer.freq)
+    SkScriptedNoiseDeformer.attributeAffects(SkScriptedNoiseDeformer.freq, outputGeom)
 
     #offset attr
     nAttr = om.MFnNumericAttribute()
-    skScriptedNoiseDeformer.offset = nAttr.createPoint('offset', 'off')
+    SkScriptedNoiseDeformer.offset = nAttr.createPoint('offset', 'off')
     nAttr.setDefault(0.0, 0.0, 0.0)
     nAttr.setKeyable(True)
-    skScriptedNoiseDeformer.addAttribute(skScriptedNoiseDeformer.offset)
-    skScriptedNoiseDeformer.attributeAffects(skScriptedNoiseDeformer.offset, outputGeom)
+    SkScriptedNoiseDeformer.addAttribute(SkScriptedNoiseDeformer.offset)
+    SkScriptedNoiseDeformer.attributeAffects(SkScriptedNoiseDeformer.offset, outputGeom)
 
     #octaves attr
     nAttr = om.MFnNumericAttribute()
-    skScriptedNoiseDeformer.octaves = nAttr.create('octaves', 'oct', om.MFnNumericData.kInt, 1)
+    SkScriptedNoiseDeformer.octaves = nAttr.create('octaves', 'oct', om.MFnNumericData.kInt, 1)
     nAttr.setMin(1)
     nAttr.setKeyable(True)
-    skScriptedNoiseDeformer.addAttribute(skScriptedNoiseDeformer.octaves)
-    skScriptedNoiseDeformer.attributeAffects(skScriptedNoiseDeformer.octaves, outputGeom)
+    SkScriptedNoiseDeformer.addAttribute(SkScriptedNoiseDeformer.octaves)
+    SkScriptedNoiseDeformer.attributeAffects(SkScriptedNoiseDeformer.octaves, outputGeom)
 
     #lacunarity attr
     nAttr = om.MFnNumericAttribute()
-    skScriptedNoiseDeformer.lacunarity = nAttr.create('lacunarity', 'lac', om.MFnNumericData.kFloat, 2.0)
+    SkScriptedNoiseDeformer.lacunarity = nAttr.create('lacunarity', 'lac', om.MFnNumericData.kFloat, 2.0)
     nAttr.setKeyable(True)
-    skScriptedNoiseDeformer.addAttribute(skScriptedNoiseDeformer.lacunarity)
-    skScriptedNoiseDeformer.attributeAffects(skScriptedNoiseDeformer.lacunarity, outputGeom)
+    SkScriptedNoiseDeformer.addAttribute(SkScriptedNoiseDeformer.lacunarity)
+    SkScriptedNoiseDeformer.attributeAffects(SkScriptedNoiseDeformer.lacunarity, outputGeom)
 
     #persistence attr
     nAttr = om.MFnNumericAttribute()
-    skScriptedNoiseDeformer.persistence = nAttr.create('persistence', 'per', om.MFnNumericData.kFloat, 0.5)
+    SkScriptedNoiseDeformer.persistence = nAttr.create('persistence', 'per', om.MFnNumericData.kFloat, 0.5)
     nAttr.setKeyable(True)
-    skScriptedNoiseDeformer.addAttribute(skScriptedNoiseDeformer.persistence)
-    skScriptedNoiseDeformer.attributeAffects(skScriptedNoiseDeformer.persistence, outputGeom)
+    SkScriptedNoiseDeformer.addAttribute(SkScriptedNoiseDeformer.persistence)
+    SkScriptedNoiseDeformer.attributeAffects(SkScriptedNoiseDeformer.persistence, outputGeom)
 
     #locatorWorldSpace attr
     mAttr = om.MFnMatrixAttribute()
-    skScriptedNoiseDeformer.locatorWorldSpace = mAttr.create('locatorWorldSpace', 'locsp')
+    SkScriptedNoiseDeformer.locatorWorldSpace = mAttr.create('locatorWorldSpace', 'locsp')
     mAttr.setStorable(False)
     mAttr.setHidden(True)
-    skScriptedNoiseDeformer.addAttribute(skScriptedNoiseDeformer.locatorWorldSpace)
-    skScriptedNoiseDeformer.attributeAffects(skScriptedNoiseDeformer.locatorWorldSpace, outputGeom)
+    SkScriptedNoiseDeformer.addAttribute(SkScriptedNoiseDeformer.locatorWorldSpace)
+    SkScriptedNoiseDeformer.attributeAffects(SkScriptedNoiseDeformer.locatorWorldSpace, outputGeom)
 
 #init plugin
 def initializePlugin(mObject):
